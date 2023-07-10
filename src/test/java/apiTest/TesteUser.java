@@ -3,13 +3,13 @@ package apiTest;
 
 // Bibliotecas
 
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 
 // Classe
 public class TesteUser {
@@ -115,6 +115,32 @@ public class TesteUser {
                 .body("type", is("unknown"))
                 .body("message", is(username))
         ;
+
+    }
+
+    // Extração de token
+    @Test
+    public void testarLogin(){
+        String username = "brunobozo";
+        String password = "abcdef";
+
+        Response response = (Response) given()
+                .contentType(ct)
+                .log().all()
+        .when()
+                .get(uriUser + "login?username=" + username + "&password=" + password)
+        .then()
+                .log().all()
+                .statusCode(200)
+                .body("code", is(200))
+                .body("type", is("unknown"))
+                .body("message", containsString("logged in user session:"))
+                .body("message", hasLength(36))
+        .extract()
+        ;
+
+        String token = response.jsonPath().getString("message").substring(23);
+        System.out.println("Conteudo do token: " + token);
 
     }
 
