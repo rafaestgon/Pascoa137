@@ -1,0 +1,20 @@
+Piramide de Teste Classica --> se refere a uma visão do Back End
+Enxergar um Piramide de Teste onde fica a camada de UI é visão de Front End
+
+Usar uma massa de teste --> DDT (tipo de teste) = Data Driven Test = Teste Direcionado por Dados (arquivo, lista)
+
+TDD (estratégia de abordagem) = Test Driven Development = Desenvolvimento Direcionado por Testes
+Daria para criar os testes sem que houvesse as funções prontas?
+Você teria:
+- nome da função que vai testar. Exemplo: somarDoisNumeros
+- os parametros da função. Exemplo: num1 e num2, que são do tipo double
+- você sbe que retorna um double
+- a informação sobre o funcionamento. Exemplo: seria uma soma de dois números
+Daria para criar os testes sem que houvesse as funções prontas?
+Sim! É possivel, precisa só comunicar bem o que faremos juntos.
+Qual o beneficio?
+- Ganha tempo, dinheiro e produtividade.
+- Funciona como exemplos.
+- Constrói os testes antes de escrever o recheio dos métodos
+- Executa todos os dias.
+- Medir o progresso do projeto (Software funcionando é uma medida de progresso
