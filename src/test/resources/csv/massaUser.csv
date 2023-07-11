@@ -1,0 +1,11 @@
+id,username,firstName,lastName,email,password,phone,userStatus
+1374145344,brunobozo,bruno,bozo,bruno@teste.com,123456,11999998888,0
+1374145345,pedro,pedro,silva,pedro@teste.com,123457,11999998881,0
+1374145346,arthur,arthur,carlos,arthur@teste.com,123458,11999998882,0
+1374145347,jose,jose,bueno,jose@teste.com,123459,11999998883,0
+1374145348,mario,mario,garcia,mario@teste.com,123460,11999998884,0
+1374145349,fernando,fernando,torres,fernando@teste.com,123461,11999998885,0
+1374145350,yago,yago,simplicio,yago@teste.com,123462,11999998886,0
+1374145351,ricardo,ricardo,gurgel,ricardo@teste.com,123463,11999998887,0
+1374145352,andre,andre,filhardo,andre@teste.com,123464,11999998880,0
+1374145353,joao,joao,correa,joao@teste.com,123465,11999998889,0

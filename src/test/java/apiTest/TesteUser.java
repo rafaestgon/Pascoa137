@@ -5,6 +5,9 @@ package apiTest;
 
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -142,6 +145,47 @@ public class TesteUser {
         String token = response.jsonPath().getString("message").substring(23);
         System.out.println("Conteudo do token: " + token);
 
+    }
+
+    //JSON dinâmico
+    @ParameterizedTest
+    @CsvFileSource(resources = "csv/massaUser.csv", numLinesToSkip = 1, delimiter = ',')
+    public void testarIncluirUserCSV(
+            String id,
+            String firstName,
+            String username,
+            String lastName,
+            String email,
+            String phone,
+            String password,
+            String userStatus)
+    {
+        // Carregar os dados do nosso Json
+        StringBuilder jsonBody = new StringBuilder("{");
+        jsonBody.append("'id': " + id + ",");
+        jsonBody.append("'username': " + username + ",");
+        jsonBody.append("'firstName': " + firstName + ",");
+        jsonBody.append("'lastName': " + lastName + ",");
+        jsonBody.append("'email': " + email + ",");
+        jsonBody.append("'password': " + password + ",");
+        jsonBody.append("'phone': " + phone + ",");
+        jsonBody.append("'userStatus': " + userStatus);
+        jsonBody.append("}");
+
+        // Realizar o teste
+        given()                                               // Dado que
+                .contentType(ct)                              // O tipo do conteúdo
+                .log().all()                                  // Mostre tudo na ida
+                .body(jsonBody)                               // Corpo da requisição
+                .when()                                               // Quando
+                .post(uriUser)                                // Endpoint / Onde
+                .then()                                               // Então
+                .log().all()                                  // Mostre tudo na volta
+                .statusCode(200)                              // Comunicação ida e volta funcionou
+                .body("code", is(200))                        // Tag code é 200
+                .body("type", is("unknown"))                  // Tag type é unknown
+                .body("message", is(id))                  // Message é o userId 1374145344
+        ;
     }
 
 }
