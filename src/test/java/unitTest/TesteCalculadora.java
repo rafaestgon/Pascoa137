@@ -51,7 +51,7 @@ public class TesteCalculadora {
     }
 
     @ParameterizedTest
-    @CsvFileSource(resources = "csv/massaSomar.csv", numLinesToSkip = 1, delimiter = ',')
+    @CsvFileSource(resources = "/csv/massaSomar.csv", numLinesToSkip = 1, delimiter = ',')
     public void testeSomarDoisNumerosLendoArquivo(String num1, String num2, String resultadoEsperado){
         // Configura
         // Os dados de entrada e o resultado esperado vem da lista

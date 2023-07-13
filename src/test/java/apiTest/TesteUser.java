@@ -3,11 +3,14 @@ package apiTest;
 
 // Bibliotecas
 
+import com.google.gson.Gson;
 import io.restassured.response.Response;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -15,6 +18,7 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 // Classe
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TesteUser {
     // Atributos
     static String ct = "application/json"; // Content type
@@ -29,7 +33,7 @@ public class TesteUser {
     // Funções de Testes
 
     // Post
-    @Test
+    @Test @Order(1)
     public void testarIncluirUser() throws IOException {
         // Carregar os dados do nosso Json
         String jsonBody = lerArquivoJson("src/test/resources/json/user1.json");
@@ -52,7 +56,7 @@ public class TesteUser {
     }
 
     // Get
-    @Test
+    @Test @Order(2)
     public void testarConsultarUser(){
         String username = "brunobozo";
 
@@ -79,7 +83,7 @@ public class TesteUser {
     }
 
     // Put
-    @Test
+    @Test @Order(3)
     public void testarAtualizarUser() throws IOException {
         String jsonBody = lerArquivoJson("src/test/resources/json/user2.json");
         String userId = "1374145344";
@@ -102,7 +106,7 @@ public class TesteUser {
     }
 
     // Delete
-    @Test
+    @Test @Order(4)
     public void testarDeletarUser() throws IOException {
         String username = "brunobozo";
 
@@ -122,7 +126,7 @@ public class TesteUser {
     }
 
     // Extração de token
-    @Test
+    @Test @Order(5)
     public void testarLogin(){
         String username = "brunobozo";
         String password = "abcdef";
@@ -148,18 +152,19 @@ public class TesteUser {
     }
 
     //JSON dinâmico
-    @ParameterizedTest
-    @CsvFileSource(resources = "csv/massaUser.csv", numLinesToSkip = 1, delimiter = ',')
+    @ParameterizedTest @Order(6)
+    @CsvFileSource(resources = "/csv/massaUser.csv", numLinesToSkip = 1, delimiter = ',')
     public void testarIncluirUserCSV(
             String id,
-            String firstName,
             String username,
+            String firstName,
             String lastName,
             String email,
-            String phone,
             String password,
+            String phone,
             String userStatus)
     {
+        /*
         // Carregar os dados do nosso Json
         StringBuilder jsonBody = new StringBuilder("{");
         jsonBody.append("'id': " + id + ",");
@@ -171,20 +176,35 @@ public class TesteUser {
         jsonBody.append("'phone': " + phone + ",");
         jsonBody.append("'userStatus': " + userStatus);
         jsonBody.append("}");
+        */
+
+        User user = new User(); // instancia a classe User
+
+        user.id = id;
+        user.username = username;
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.email = email;
+        user.password = password;
+        user.phone = phone;
+        user.userStatus = userStatus;
+
+        Gson gson = new Gson(); // instancia a classe Gson
+        String jsonBody = gson.toJson(user);
 
         // Realizar o teste
         given()                                               // Dado que
                 .contentType(ct)                              // O tipo do conteúdo
                 .log().all()                                  // Mostre tudo na ida
                 .body(jsonBody)                               // Corpo da requisição
-                .when()                                               // Quando
+                .when()                                       // Quando
                 .post(uriUser)                                // Endpoint / Onde
-                .then()                                               // Então
+                .then()                                       // Então
                 .log().all()                                  // Mostre tudo na volta
                 .statusCode(200)                              // Comunicação ida e volta funcionou
                 .body("code", is(200))                        // Tag code é 200
                 .body("type", is("unknown"))                  // Tag type é unknown
-                .body("message", is(id))                  // Message é o userId 1374145344
+                .body("message", is(id))                      // Message é o userId 1374145344
         ;
     }
 
